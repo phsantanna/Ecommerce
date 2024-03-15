@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos dos Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        li:last-child {
+            margin-bottom: 0;
+        }
+        .cliente {
+            font-weight: bold;
+            color: #333;
+        }
+        .produtos {
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Pedidos dos Clientes</h1>
+
+    <ul id="lista-pedidos">
+        <!-- Os pedidos serão adicionados dinamicamente aqui -->
+        <li th:each="pedido : ${pedidos}">
+            <span class="cliente">Cliente:</span> <span th:text="${pedido.clientes.nome}"></span><br>
+            <span class="produtos">Produtos:</span>
+            <ul>
+                <li th:each="produto : ${pedido.produtos}">
+                    <span th:text="${produto.produto.nomeProduto}"></span><br>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    fetch('/listar-pedidos')
+        .then(response => response.json())
+        .then(pedidos => {
+            const listaPedidos = document.getElementById('lista-pedidos');
+            pedidos.forEach(pedido => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span class="cliente">Cliente:</span> ${pedido.clientes.nome}<br>
+                    <span class="produtos">Produtos:</span>
+                    <ul>
+                        ${pedido.produtos.map(produto => `
+                            <li>
+                                ${produto.produto.nomeProduto}
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                listaPedidos.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error('Erro ao buscar os pedidos:', error));
+    /*]]>*/
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrinho de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+<h1>Carrinho de Compras</h1>
+<h2>Itens no Carrinho do Cliente</h2>
+<table id="carrinho-table">
+    <thead>
+    <tr>
+        <th>Produto</th>
+        <th>Preço Unitário</th>
+        <th>Quantidade</th>
+        <th>Subtotal</th>
+    </tr>
+    </thead>
+    <tbody id="carrinho-body">
+
+    <tr th:each="item : ${itensCarrinho}">
+        <td>
+            <img th:src="${item.produto.imagemProduto}" alt="Imagem do Produto" class="product-image">
+            <span th:text="${item.produto.nomeProduto}"></span>
+        </td>
+        <td th:text="${item.produto.precoProduto}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<button id="criar-pedido">Criar Pedido</button>
+
+<script th:inline="javascript">
+    var clienteId = /*[[${clienteId}]]*/ null;
+
+    document.getElementById('criar-pedido').addEventListener('click', function() {
+        criarPedido(clienteId);
+    });
+
+    function criarPedido(clienteId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/pedidos/' + clienteId, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log('Pedido criado com sucesso!');
+
+            } else {
+                console.error('Erro ao criar pedido');
+            }
+        };
+        xhr.send();
+    }
+</script>
+</body>
+</html>

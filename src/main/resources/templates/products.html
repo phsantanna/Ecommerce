@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .product {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+        }
+        .product img {
+            float: left;
+            margin-right: 20px;
+        }
+        .product h2 {
+            margin-top: 0;
+        }
+        .product p {
+            margin-bottom: 10px;
+        }
+        form {
+            display: inline;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Produtos Disponíveis</h1>
+    <div th:each="product : ${products}" class="product">
+        <div>
+            <img th:src="${product.imagemProduto}" width="100" height="100"/>
+        </div>
+        <div>
+            <h2 th:text="${product.nomeProduto}"></h2>
+            <p th:text="${'Preço: R$' + product.precoProduto}"></p>
+            <form action="/carrinho/adicionar-carrinho" method="post">
+                <input type="hidden" name="produtoId" th:value="${product.id}">
+                <button type="submit">Adicionar ao carrinho</button>
+            </form>
+
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</div>
+</body>
+</html>

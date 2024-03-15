@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+
+<h2>Sign Up</h2>
+
+<form id="signupForm" action="#" th:action="@{/clientes/cadastrar}" th:object="${cadastroDto}" method="POST">
+    <label>nome:
+    <input type="text"  name="nome" required>
+    </label>
+    <br>
+    <label>
+        sobrenome:
+        <input type="text"  name="sobrenome" required>
+    </label>
+    <br>
+    <label>
+        email:
+        <input type="text"  name="email" required>
+    </label>
+    <br>
+    <label>
+        senha:
+        <input type="password"  name="senha" required>
+    </label>
+    <br>
+    <button type="submit" Value="Submit">Sign Up</button>
+</form>
+
+
+</body>
+</html>
